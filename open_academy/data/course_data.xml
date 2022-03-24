@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="course" id="open_academy_course_info">
+            <field name="name">Odoo</field>
+            <field name="description">Test description</field>
+        </record>
+
+        <record model="course" id="open_academy_course_info_1">
+            <field name="name">Python</field>
+            <field name="description">Test description</field>
+        </record>
+
+    </data>
+</odoo>
+
+
+

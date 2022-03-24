@@ -1,0 +1,165 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="open_academy_form">
+      <field name="name">open_academy.form.view</field>
+      <field name="model">course</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <group>
+              <field name="name" string="Title"/>
+              <field name="user_id"/>
+              <field name="session_ids"/>
+            </group>
+            <notebook colspan="4">
+              <page string="Description">
+                <field name="description"/>
+              </page>
+            </notebook>
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <record id="open_academy_search" model="ir.ui.view">
+      <field name="name">open_academy.search.view</field>
+      <field name="model">course</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="description"/>
+          <filter name="my_courses" string="My Courses"
+                  domain="[('user_id', '=', uid)]"/>
+          <group string="Group By">
+            <filter name="by_responsible" string="Responsible"
+                    context="{'group_by': 'user_id'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="session_form">
+      <field name="name">open_academy.session.form</field>
+      <field name="model">session</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="duration"/>
+              <field name="instructor_id"/>
+              <field name="course_id"/>
+            </group>
+            <group>
+              <field name="start_date"/>
+              <field name="seats_num"/>
+              <field name="attendees_ids"/>
+              <field name="percent_seats" widget="progressbar"/>
+              <field name="active"/>
+            </group>
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_model_fields_tree" model="ir.ui.view">
+      <field name="model">session</field>
+      <field name="arch" type="xml">
+        <tree string="Fields" duplicate="false" decoration-info="duration &lt;5" decoration-danger="duration &gt;15">
+          <field name="name"/>
+          <field name="percent_seats" widget="progressbar"/>
+          <field name="duration" invisible="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="session_calendar_view" model="ir.ui.view">
+      <field name="name">sopen_academy.session.calendar</field>
+      <field name="model">session</field>
+      <field name="arch" type="xml">
+        <calendar string="Sessions" date_start="start_date" color="instructor_id">
+          <field name="name"/>
+        </calendar>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_graph_view">
+      <field name="name">open_academy.session.graph</field>
+      <field name="model">session</field>
+      <field name="arch" type="xml">
+        <graph string="Courses">
+          <field name="course_id"/>
+          <field name="attendees_num" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_kanban_view">
+      <field name="name">open_academy.session.kanban</field>
+      <field name="model">session</field>
+      <field name="arch" type="xml">
+        <kanban string="Courses" default_group_by="course_id">
+          <field name="name"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div>
+                <field name="name"/>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="open_academy.course_window">
+      <field name="name">Courses act window</field>
+      <field name="res_model">course</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_my_courses': 1}</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="open_academy.session_window">
+      <field name="name">Session act window</field>
+      <field name="res_model">session</field>
+      <field name="view_mode">tree,form,calendar,graph,kanban</field>
+    </record>
+
+    <!-- server action to the one above -->
+
+    <!--    <record model="ir.actions.server" id="open_academy.action_server">-->
+    <!--      <field name="name">Add attendees</field>-->
+    <!--      <field name="type">ir.actions.server</field>-->
+    <!--      <field name="model_id" ref="model_session"/>-->
+    <!--      <field name="state">code</field>-->
+    <!--      <field name="code">-->
+    <!--        action = {-->
+    <!--          "type": "ir.actions.act_window",-->
+    <!--        }-->
+    <!--      </field>-->
+    <!--    </record>-->
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Courses top menu" id="open_academy.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Courses menu category" id="open_academy.menu_1" parent="open_academy.menu_root"/>
+    <menuitem name="Session" id="open_academy.menu_2" parent="open_academy.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Curses" id="open_academy.menu_1_list" parent="open_academy.menu_1"
+              action="open_academy.course_window"/>
+    <menuitem name="Sessions" id="open_academy.menu_session" parent="open_academy.menu_2"
+              action="open_academy.session_window"/>
+
+
+  </data>
+</odoo>

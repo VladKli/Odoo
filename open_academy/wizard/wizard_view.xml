@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="view_create_attendees_form" model="ir.ui.view">
+        <field name="name">course.wizard.form</field>
+        <field name="model">course.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create new attendees">
+                <group class="oe_title">
+                    <field name="session_ids"/>
+                    <field name="attendees_ids"/>
+                </group>
+                <footer>
+                    <button string="Add attendees" name="add_attendees_to_session" class="btn-primary" type="object"/>
+                    <button string="Cansel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+        <record id="launch_the_wizard" model="ir.actions.act_window">
+        <field name="name">Add attendees to course</field>
+        <field name="res_model">course.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_session"/>
+    </record>
+
+
+
+</odoo>
